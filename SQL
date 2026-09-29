@@ -1,0 +1,87 @@
+WITH combined_months AS (
+  SELECT '2025-08' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.25Aug` 
+  
+  UNION ALL
+
+  SELECT '2025-09' AS ride_month, ride_id,member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.25Sep` 
+  
+  UNION ALL
+
+  SELECT '2025-10' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.25Oct` 
+  
+  UNION ALL
+
+  SELECT '2025-11' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.25Nov` 
+  
+  UNION ALL
+  
+  SELECT '2025-12' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.25Dec` 
+  
+  UNION ALL
+  
+  SELECT '2026-01' AS ride_month, ride_id, member_casual, started_at, ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26jan` 
+  
+  UNION ALL
+  
+  SELECT '2026-02' AS ride_month, ride_id, member_casual, started_at, ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26feb` 
+  
+  UNION ALL
+  
+  SELECT '2026-03' AS ride_month, ride_id, member_casual, started_at, ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26mar` 
+  
+  UNION ALL
+  
+  SELECT '2026-04' AS ride_month, ride_id, member_casual, started_at, ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26Apr` 
+  
+  UNION ALL
+  
+  SELECT '2026-05' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26May` 
+  
+  UNION ALL
+  
+  SELECT '2026-06' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26Jun` 
+  
+  UNION ALL
+  
+  SELECT '2026-07' AS ride_month, ride_id, member_casual,
+  SAFE_CAST(started_at AS TIMESTAMP) AS started_at, 
+  SAFE_CAST(ended_at AS TIMESTAMP) AS ended_at 
+  FROM `intense-idea-509720-a2.cert_project.26Jul`
+)
+
+SELECT
+  ride_month,
+  member_casual,
+  COUNT(*) AS total_rides,
+  COUNT(CASE WHEN member_casual = 'casual' THEN 1 END) AS casual_rides,
+  COUNT(CASE WHEN member_casual = 'member' THEN 1 END) AS member_rides,
+  ROUND(100 * COUNT(CASE WHEN member_casual = 'casual' THEN 1 END) / COUNT(*), 2) AS casual_pct,
+  ROUND(100 * COUNT(CASE WHEN member_casual = 'member' THEN 1 END) / COUNT(*), 2) AS member_pct,
+FROM combined_months
+GROUP BY ride_month, member_casual
+ORDER BY ride_month ASC;
